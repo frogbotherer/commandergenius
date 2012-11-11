@@ -332,6 +332,7 @@ class Settings
 			Globals.DataDir = Globals.DownloadToSdcard ?
 								SdcardAppPath.getPath(p) :
 								p.getFilesDir().getAbsolutePath();
+
 			if( Globals.DownloadToSdcard )
 			{
 				// Check if data already installed into deprecated location at /sdcard/app-data/<package-name>
@@ -341,9 +342,20 @@ class Settings
 						if( s.toUpperCase().startsWith(DataDownloader.DOWNLOAD_FLAG_FILENAME.toUpperCase()) )
 							Globals.DataDir = SdcardAppPath.deprecatedPath(p);
 			}
+
 		}
 
 		System.out.println("libSDL: Settings.Load(): loading settings failed, running config dialog");
+
+        /* *** set Crawl defaults that can't be set anywhere else *** */
+        System.out.println("libSDL: Settings.Load(): setting DCSS-specific defaults");
+        Globals.RemapMultitouchGestureKeycode[0] = 182; // SDL_1_2_Keycodes.SDLK_KP_PLUS;
+        Globals.RemapMultitouchGestureKeycode[1] = 181; // SDL_1_2_Keycodes.SDLK_KP_MINUS;
+        Globals.MultitouchGesturesUsed[0] = true;
+        Globals.MultitouchGesturesUsed[1] = true;
+        Globals.MultitouchGesturesUsed[2] = false;
+        Globals.MultitouchGesturesUsed[3] = false;
+
 		p.setUpStatusLabel();
 		showConfig(p, true);
 	}
